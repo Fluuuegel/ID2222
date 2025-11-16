@@ -11,32 +11,16 @@ class LSH:
         return hash(tuple(band))
     
     def find_candidate_pairs(self, sigs: List[List[int]], ids: List[int] = None) -> Set[Tuple[int, int]]:
-        if not sigs:
-            return set()
-        
-        len_sig = len(sigs[0])
-        
-        if self.b * self.r != len_sig:
-            raise ValueError(
-                f"num_bands ({self.b}) * num_rows_per_band "
-                f"({self.r}) must equal signature length "
-                f"({len_sig})"
-            )
-        
-        if ids is None:
-            ids = list(range(len(sigs)))
-        
-        if len(ids) != len(sigs):
-            raise ValueError("Number of doc_ids must match number of signatures")
-        
+        # Initialize buckets for each band
         buckets: Dict[int, Dict[int, Set[int]]] = {}
         
         for bi in range(self.b):
             buckets[bi] = {}
         
+        # hash each docs bands
         for doc_id, sig in zip(ids, sigs):
             for bi in range(self.b):
-                start = bi * self.r
+                start = bi * self.r 
                 end = start + self.r
                 band = sig[start:end]
                 
@@ -48,6 +32,7 @@ class LSH:
         
         pairs = set()
         
+        # find candidate pairs
         for bi in range(self.b):
             for bh, ds in buckets[bi].items():
                 dl = sorted(list(ds))

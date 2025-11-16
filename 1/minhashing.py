@@ -10,6 +10,7 @@ class MinHashing:
         self.p = 2147483647
         self.params = []
         
+        # hash functions: h(x) = (a * x + b) % p
         for _ in range(num_permutations):
             a = random.randint(1, self.p - 1)
             b = random.randint(0, self.p - 1)
@@ -19,11 +20,11 @@ class MinHashing:
         sig = []
         
         for a, b in self.params:
-            mh = self.p
+            mh = self.p # mh is the minimum hash value
             
             for s in shingles:
                 hv = ((a * s + b) % self.p)
-                mh = min(mh, hv)
+                mh = min(mh, hv) # update mh if hv is smaller
             
             sig.append(mh)
         
