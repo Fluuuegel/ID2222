@@ -112,11 +112,11 @@ def generate_rules(frequent_itemsets, min_confidence):
         if len(itemset) < 2:
             continue
         
-        # Generate all possible rules X -> Y where X ∪ Y = itemset
+        # Generate all possible rules X -> Y where X union Y = itemset
         itemset_list = list(itemset)
-        # Generate all non-empty proper subsets as antecedents
+        # Generate all non-empty subsets as left
         for i in range(1, 2 ** len(itemset_list) - 1):
-            # Create antecedent X
+            # Create X
             selected_items = []
 
             for index in range(len(itemset_list)):
@@ -134,7 +134,7 @@ def generate_rules(frequent_itemsets, min_confidence):
             if support_X is None:
                 continue
             
-            # Calculate confidence: support(X ∪ Y) / support(X)
+            # Calculate confidence: support(X union Y) / support(X)
             confidence = support / support_X
             if confidence >= min_confidence:
                 rules.append((X, Y, support, confidence))
